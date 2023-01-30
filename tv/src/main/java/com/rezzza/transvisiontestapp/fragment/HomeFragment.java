@@ -1,5 +1,6 @@
 package com.rezzza.transvisiontestapp.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -60,6 +61,8 @@ public class HomeFragment extends BrowseSupportFragment {
     private Timer mBackgroundTimer;
     private int selectedItem = R.drawable.background;
 
+    private ProgressDialog loadingDialog;
+
     public HomeFragment() {
     }
 
@@ -103,6 +106,8 @@ public class HomeFragment extends BrowseSupportFragment {
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         setAdapter(rowsAdapter);
 
+        loadingDialog = ProgressDialog.show(requireActivity(), "","Load data. Please wait...", true);
+
         loadCoupon();
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
@@ -145,6 +150,8 @@ public class HomeFragment extends BrowseSupportFragment {
             else {
                 Toast.makeText(requireActivity(),"Error API Connection", Toast.LENGTH_LONG).show();
             }
+
+            loadingDialog.cancel();
         });
 
     }
