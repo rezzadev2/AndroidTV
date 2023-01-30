@@ -1,6 +1,10 @@
 # AndroidTV
 Test TV Android
 
+APK
+
+<a href="https://github.com/rezzadev2/AndroidTV/raw/master/tv-debug.apk" download>Download Apk</a>
+
 
 
 Screenshot
