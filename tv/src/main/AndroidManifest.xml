@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailCouponActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".activity.DetailActivity" android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

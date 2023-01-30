@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.leanback.app.BackgroundManager;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
 import androidx.leanback.widget.OnItemViewClickedListener;
@@ -32,10 +31,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.rezzza.transvisiontestapp.R;
+import com.rezzza.transvisiontestapp.activity.DetailActivity;
 import com.rezzza.transvisiontestapp.activity.DetailCouponActivity;
 import com.rezzza.transvisiontestapp.data.CategoryData;
 import com.rezzza.transvisiontestapp.model.Category;
 import com.rezzza.transvisiontestapp.model.Coupon;
+import com.rezzza.transvisiontestapp.model.MyHeaderItem;
 import com.rezzza.transvisiontestapp.presenter.CardPresenter;
 import com.rezzza.transvisiontestapp.presenter.CouponPresenter;
 import com.rezzza.transvisiontestapp.viewmodel.MainViewModel;
@@ -57,6 +58,7 @@ public class HomeFragment extends BrowseSupportFragment {
     private Drawable mDefaultBackground;
     private DisplayMetrics mMetrics;
     private Timer mBackgroundTimer;
+    private int selectedItem = R.drawable.background;
 
     public HomeFragment() {
     }
@@ -77,6 +79,12 @@ public class HomeFragment extends BrowseSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startBackgroundTimer(selectedItem);
     }
 
     @Override
@@ -157,13 +165,13 @@ public class HomeFragment extends BrowseSupportFragment {
                     gridRowAdapter.add(category);
                 }
 
-                HeaderItem gridHeader = new HeaderItem(categoryId, jo.getString("categoryName"));
+                MyHeaderItem gridHeader = new MyHeaderItem(categoryId, jo.getString("categoryName"), R.drawable.ic_travel);
                 rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        setSelectedPosition(1);
+
     }
 
     private void buildCoupon(ArrayList<Object> objects){
@@ -203,6 +211,12 @@ public class HomeFragment extends BrowseSupportFragment {
                 intent.putExtra("data", coupon);
                 startActivity(intent);
             }
+            else {
+                Category category = (Category) item;
+                Intent intent = new Intent(requireActivity(), DetailActivity.class);
+                intent.putExtra("data", category);
+                startActivity(intent);
+            }
 
         }
     }
@@ -233,6 +247,7 @@ public class HomeFragment extends BrowseSupportFragment {
     }
 
     private void startBackgroundTimer(int res) {
+        selectedItem = res;
         if (null != mBackgroundTimer) {
             mBackgroundTimer.cancel();
         }
